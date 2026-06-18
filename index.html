@@ -5,125 +5,246 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Metas — Taller de Hierbas</title>
   <style>
-    :root {
-      --beige:       #C8B8A8;
-      --beige-light: #F5F0EB;
-      --brown-dark:  #3D2B1F;
-      --brown-mid:   #7A5C48;
-      --green:       #5A8A5A;
-      --yellow:      #C4A030;
-      --red:         #B84A3A;
-      --white:       #FEFCFA;
-    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: var(--beige-light);
-      color: var(--brown-dark);
+      background: #F0EDE8;
+      color: #1A1A1A;
       min-height: 100vh;
     }
-    header {
-      background: var(--beige);
-      padding: 20px 16px 16px;
-      text-align: center;
+
+    /* HEADER */
+    .header {
+      background: #3D5A38;
+      padding: 20px 16px 24px;
     }
-    header h1 {
-      font-size: 1rem;
-      font-weight: 600;
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .header-title {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-style: italic;
+      font-size: 26px;
+      color: #fff;
+      line-height: 1.1;
+    }
+    .header-subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      margin-top: 3px;
+    }
+    .mes-pill {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
       letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--brown-dark);
+      padding: 6px 12px;
+      border-radius: 999px;
+      white-space: nowrap;
     }
-    #actualizado {
-      font-size: 0.72rem;
-      color: var(--brown-mid);
-      margin-top: 5px;
+    .summary-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
-    main {
-      max-width: 560px;
-      margin: 0 auto;
-      padding: 16px;
+    .summary-card {
+      background: rgba(0,0,0,0.2);
+      border-radius: 12px;
+      padding: 12px 14px;
     }
-    .mes-titulo {
-      text-align: center;
-      font-size: 0.8rem;
+    .summary-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 4px;
+    }
+    .summary-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+    }
+    .summary-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+      margin-top: 4px;
+    }
+
+    /* TIMESTAMP */
+    .timestamp-bar {
+      background: #E8E4DE;
+      padding: 8px 16px;
+      font-size: 12px;
+      color: #7A6A5A;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    /* CONTENIDO */
+    main { padding: 14px 14px 32px; max-width: 560px; margin: 0 auto; }
+
+    /* TARJETA DE RITMO GLOBAL */
+    .ritmo-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      border: 0.5px solid rgba(0,0,0,0.08);
+    }
+    .ritmo-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .ritmo-card-texto {
+      font-size: 13px;
+      color: #555;
+    }
+    .ritmo-card-texto strong { color: #1A1A1A; }
+    .ritmo-badge {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .ritmo-badge.bien   { background: #D1FAE5; color: #065F46; }
+    .ritmo-badge.alerta { background: #FEF3C7; color: #92400E; }
+    .ritmo-badge.bajo   { background: #FEE2E2; color: #991B1B; }
+    .progress-track {
+      background: #E8E4DE;
+      border-radius: 999px;
+      height: 7px;
+      overflow: hidden;
+    }
+    .progress-fill { height: 100%; border-radius: 999px; }
+    .fill-bien  { background: #16A34A; }
+    .fill-alerta { background: #D97706; }
+    .fill-bajo  { background: #DC2626; }
+
+    /* SECCIÓN */
+    .seccion-titulo {
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--brown-mid);
-      margin-bottom: 14px;
+      color: #7A6A5A;
+      margin: 18px 0 8px;
+      padding-left: 4px;
+      border-left: 3px solid #3D5A38;
+      padding-left: 8px;
     }
+
+    /* TARJETA DE CANAL */
     .canal-card {
-      background: var(--white);
-      border-radius: 10px;
+      background: #fff;
+      border-radius: 12px;
       padding: 13px 15px;
       margin-bottom: 9px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      border: 0.5px solid rgba(0,0,0,0.07);
     }
     .canal-header {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: center;
       margin-bottom: 7px;
     }
-    .canal-nombre { font-size: 0.88rem; font-weight: 600; }
-    .canal-pct    { font-size: 0.98rem; font-weight: 700; }
-    .canal-pct.bueno { color: var(--green); }
-    .canal-pct.medio { color: var(--yellow); }
-    .canal-pct.bajo  { color: var(--red); }
-    .progress-track {
-      background: #E8E0D8;
-      border-radius: 999px;
-      height: 7px;
-      overflow: hidden;
-      margin-bottom: 6px;
+    .canal-nombre {
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 7px;
     }
-    .progress-fill {
-      height: 100%;
-      border-radius: 999px;
-      transition: width 0.5s ease;
+    .canal-pct {
+      font-size: 18px;
+      font-weight: 700;
     }
-    .progress-fill.bueno { background: var(--green); }
-    .progress-fill.medio { background: var(--yellow); }
-    .progress-fill.bajo  { background: var(--red); }
+    .canal-pct.bien   { color: #16A34A; }
+    .canal-pct.alerta { color: #D97706; }
+    .canal-pct.bajo   { color: #DC2626; }
     .canal-montos {
       display: flex;
       justify-content: space-between;
-      font-size: 0.73rem;
-      color: var(--brown-mid);
+      font-size: 12px;
+      color: #7A6A5A;
+      margin-top: 6px;
     }
-    .total-card {
-      background: var(--beige);
-      border-radius: 10px;
-      padding: 15px;
-      margin-top: 4px;
-      margin-bottom: 28px;
+    .canal-ritmo-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
     }
-    .total-card .canal-nombre { font-size: 0.95rem; letter-spacing: 0.04em; }
-    .total-card .canal-pct    { font-size: 1.15rem; }
-    .total-card .canal-montos { font-size: 0.78rem; }
+    .canal-ritmo-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+    .canal-ritmo-badge.bien   { background: #D1FAE5; color: #065F46; }
+    .canal-ritmo-badge.alerta { background: #FEF3C7; color: #92400E; }
+    .canal-ritmo-badge.bajo   { background: #FEE2E2; color: #991B1B; }
+    .canal-necesita {
+      font-size: 11px;
+      color: #7A6A5A;
+    }
+    .canal-necesita strong { color: #1A1A1A; }
+
     #estado {
       text-align: center;
       padding: 60px 16px;
-      color: var(--brown-mid);
-      font-size: 0.88rem;
+      color: #7A6A5A;
+      font-size: 14px;
     }
-    #estado.error { color: var(--red); }
+    #estado.error { color: #DC2626; }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>Metas Taller de Hierbas</h1>
-  <div id="actualizado">Cargando…</div>
-</header>
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="header-title">Taller de Hierbas</div>
+      <div class="header-subtitle">Seguimiento de metas</div>
+    </div>
+    <div class="mes-pill" id="mes-pill">—</div>
+  </div>
+  <div class="summary-cards">
+    <div class="summary-card">
+      <div class="summary-label">VENDIDO</div>
+      <div class="summary-value" id="total-vendido">—</div>
+      <div class="summary-sub" id="total-sub">—</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">META TOTAL</div>
+      <div class="summary-value" id="total-meta">—</div>
+      <div class="summary-sub" id="total-dias">—</div>
+    </div>
+  </div>
+</div>
+
+<div class="timestamp-bar" id="timestamp">Cargando…</div>
 
 <main>
   <div id="estado">Cargando datos…</div>
   <div id="contenido" style="display:none">
-    <div class="mes-titulo" id="mes-titulo"></div>
-    <div id="lista-canales"></div>
-    <div id="total"></div>
+    <div class="ritmo-card">
+      <div class="ritmo-card-top">
+        <div class="ritmo-card-texto" id="ritmo-texto">—</div>
+        <div class="ritmo-badge" id="ritmo-badge-global">—</div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="ritmo-bar" style="width:0%"></div>
+      </div>
+    </div>
+    <div id="secciones"></div>
   </div>
 </main>
 
@@ -134,122 +255,195 @@
 
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFfQywCY_PGep0XhChGTgJMqwANC2-Ie54vhn52OuZAS2OAN1ln-2F-2cyLqbAkBU/exec";
 
-// Para agregar un mes nuevo: copia el bloque "2026-06" y pégalo debajo
-// cambiando la clave y los valores. El dashboard usa el mes actual automáticamente.
+// Para agregar un mes nuevo: copia el bloque "2026-06" y pégalo debajo.
+// El dashboard usa el mes actual automáticamente.
+// Los nombres deben coincidir exactamente con lo que devuelve Alegra.
+// Para agregar julio: copia el bloque "2026-06", cambia la clave y los valores.
 const METAS = {
   "2026-06": {
-    "Tienda Poblado":          15_000_000,
-    "Tienda Laureles":         24_000_000,
-    "Tienda Zona 2 Sur":       28_000_000,
-    "Tienda San Lucas Plaza":  22_000_000,
-    "Tienda Retiro":           54_000_000,
-    "Tienda Bogotá":           36_000_000,
-    "Redes Sociales":           7_500_000,
-    "Dist/Institucional":      60_000_000,
-    "Digital (PW+Rappi)":      60_000_000,
-    "Ferias":                           0,
+    "Tienda Retiro":        54_000_000,
+    "Tienda Laureles":      24_000_000,
+    "Tienda Zona 2":        28_000_000,
+    "Tienda San Lucas":     22_000_000,
+    "Tienda Poblado":       15_000_000,
+    "Tienda Bogotá":        36_000_000,
+    "Redes Sociales":        7_500_000,
+    "Dist/Institucional":   60_000_000,
+    "Digital (PW+Rappi)":   60_000_000,
+    "Ferias":                        0,
   },
   // "2026-07": {
-  //   "Tienda Poblado":         00_000_000,
-  //   ...
+  //   "Tienda Retiro":       00_000_000,
+  //   "Tienda Laureles":     00_000_000,
+  //   "Tienda Zona 2":       00_000_000,
+  //   "Tienda San Lucas":    00_000_000,
+  //   "Tienda Poblado":      00_000_000,
+  //   "Tienda Bogotá":       00_000_000,
+  //   "Redes Sociales":      00_000_000,
+  //   "Dist/Institucional":  00_000_000,
+  //   "Digital (PW+Rappi)":  00_000_000,
+  //   "Ferias":                      0,
   // },
 };
 
-// Mapeo: nombre en el dashboard → nombre(s) exactos que devuelve Alegra
-// Si algún nombre no coincide, ajústalo aquí (no toques el resto del código)
-const MAPEO = {
-  "Tienda Poblado":         ["Tienda Poblado"],
-  "Tienda Laureles":        ["Tienda Laureles"],
-  "Tienda Zona 2 Sur":      ["Tienda Zona 2"],
-  "Tienda San Lucas Plaza": ["Tienda San Lucas"],
-  "Tienda Retiro":          ["Tienda Retiro"],
-  "Tienda Bogotá":          ["Tienda Usaquén"],
-  "Redes Sociales":         ["Redes Sociales"],
-  "Dist/Institucional":     ["Distribuidores", "Ventas institucionales"],
-  "Digital (PW+Rappi)":     ["Página Web", "Rappi Medellín", "Rappi Bogotá"],
-  "Ferias":                 ["Ferias"],
+// Emoji y sección de cada canal (nombres deben coincidir con METAS)
+const INFO_CANAL = {
+  "Tienda Retiro":       { emoji: "🌿", seccion: "Tiendas físicas" },
+  "Tienda Laureles":     { emoji: "🌸", seccion: "Tiendas físicas" },
+  "Tienda Zona 2":       { emoji: "🏬", seccion: "Tiendas físicas" },
+  "Tienda San Lucas":    { emoji: "🏛️", seccion: "Tiendas físicas" },
+  "Tienda Poblado":      { emoji: "🏪", seccion: "Tiendas físicas" },
+  "Tienda Bogotá":       { emoji: "🏙️", seccion: "Tiendas físicas" },
+  "Redes Sociales":      { emoji: "📱", seccion: "Canales digitales" },
+  "Digital (PW+Rappi)":  { emoji: "🛵", seccion: "Canales digitales" },
+  "Dist/Institucional":  { emoji: "📦", seccion: "Otros canales" },
+  "Ferias":              { emoji: "🎪", seccion: "Otros canales" },
 };
 
+// El Apps Script ya agrupa los canales — cada nombre mapea directo a sí mismo
+const MAPEO = Object.fromEntries(Object.keys(INFO_CANAL).map(k => [k, [k]]));
+
 // ══════════════════════════════════════════════════════════════
-//  MOTOR — no necesitas modificar nada debajo de esta línea
+//  MOTOR
 // ══════════════════════════════════════════════════════════════
 
 function mesKey() {
   const h = new Date();
-  return `${h.getFullYear()}-${String(h.getMonth() + 1).padStart(2, "0")}`;
+  return `${h.getFullYear()}-${String(h.getMonth()+1).padStart(2,"0")}`;
 }
 
 function labelMes(key) {
   const meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio",
                  "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
   const [y, m] = key.split("-");
-  return `${meses[+m - 1]} ${y}`;
+  return `${meses[+m-1].toUpperCase()} ${y}`;
 }
 
 function cop(n) {
+  if (Math.abs(n) >= 1_000_000) return "$" + (n/1_000_000).toFixed(1) + "M";
+  if (Math.abs(n) >= 1_000)     return "$" + Math.round(n/1_000) + "K";
   return "$" + Math.round(n).toLocaleString("es-CO");
 }
 
-function clase(pct) {
-  return pct >= 80 ? "bueno" : pct >= 50 ? "medio" : "bajo";
+function copFull(n) {
+  return "$" + Math.round(n).toLocaleString("es-CO");
 }
 
-function tarjeta(nombre, venta, meta, esTotal) {
-  const pct   = meta > 0 ? Math.min((venta / meta) * 100, 100) : 0;
-  const cl    = clase(pct);
-  const extra = esTotal ? " total-card" : "";
-  return `
-    <div class="canal-card${extra}">
-      <div class="canal-header">
-        <span class="canal-nombre">${nombre}</span>
-        <span class="canal-pct ${cl}">${meta > 0 ? pct.toFixed(1) + "%" : "—"}</span>
-      </div>
-      <div class="progress-track">
-        <div class="progress-fill ${cl}" style="width:${pct}%"></div>
-      </div>
-      <div class="canal-montos">
-        <span>${cop(venta)}</span>
-        <span>meta ${cop(meta)}</span>
-      </div>
-    </div>`;
+function claseRitmo(pct) {
+  if (pct >= 85) return "bien";
+  if (pct >= 60) return "alerta";
+  return "bajo";
+}
+
+function emojiRitmo(pct) {
+  if (pct >= 85) return "✅";
+  return "⚠️";
 }
 
 function render(data) {
   const key   = mesKey();
   const metas = METAS[key];
-
   if (!metas) {
-    error(`No hay metas para ${labelMes(key)}. Agrégalas en el objeto METAS del código.`);
+    error(`No hay metas configuradas para ${labelMes(key)}.`);
     return;
   }
 
-  // Agrupar ventas según MAPEO
+  // Fechas
+  const hoy         = new Date();
+  const diasEnMes   = new Date(hoy.getFullYear(), hoy.getMonth()+1, 0).getDate();
+  const diaActual   = hoy.getDate();
+  const diasRestantes = diasEnMes - diaActual;
+  const fraccion    = diaActual / diasEnMes;
+
+  // Agrupar ventas
   const ventas = {};
   for (const [canal, nombres] of Object.entries(MAPEO)) {
     ventas[canal] = nombres.reduce((s, n) => s + (data.canales[n] || 0), 0);
   }
 
-  let html = "";
-  let totalVenta = 0, totalMeta = 0;
-
-  for (const [canal, meta] of Object.entries(metas)) {
-    const venta = ventas[canal] || 0;
-    if (meta === 0 && venta === 0) continue;
-    totalVenta += venta;
-    totalMeta  += meta;
-    html += tarjeta(canal, venta, meta, false);
+  // Totales
+  let totalV = 0, totalM = 0;
+  for (const canal of Object.keys(metas)) {
+    totalV += ventas[canal] || 0;
+    totalM += metas[canal]  || 0;
   }
 
-  document.getElementById("mes-titulo").textContent = labelMes(key);
-  document.getElementById("lista-canales").innerHTML = html;
-  document.getElementById("total").innerHTML = tarjeta("TOTAL", totalVenta, totalMeta, true);
+  const metaPropGlobal = totalM * fraccion;
+  const ritmoGlobal    = metaPropGlobal > 0 ? (totalV / metaPropGlobal) * 100 : 0;
+  const pctGlobal      = totalM > 0 ? Math.min((totalV / totalM) * 100, 100) : 0;
+  const claseG         = claseRitmo(ritmoGlobal);
 
+  // Header
+  document.getElementById("mes-pill").textContent     = labelMes(key);
+  document.getElementById("total-vendido").textContent = cop(totalV);
+  document.getElementById("total-meta").textContent    = cop(totalM);
+  document.getElementById("total-sub").textContent     =
+    `${pctGlobal.toFixed(1)}% · meta al día ${cop(metaPropGlobal)}`;
+  document.getElementById("total-dias").textContent    =
+    `Día ${diaActual} de ${diasEnMes}`;
+
+  // Timestamp
   const ts = new Date(data.actualizado);
-  document.getElementById("actualizado").textContent =
-    `Actualizado ${ts.toLocaleDateString("es-CO", {day:"numeric", month:"short"})} · ` +
-    ts.toLocaleTimeString("es-CO", {hour:"2-digit", minute:"2-digit"});
+  document.getElementById("timestamp").textContent =
+    `Datos del ${ts.toLocaleDateString("es-CO",{day:"numeric",month:"short",year:"numeric"})}, ` +
+    ts.toLocaleTimeString("es-CO",{hour:"2-digit",minute:"2-digit"});
 
-  document.getElementById("estado").style.display = "none";
+  // Ritmo global
+  document.getElementById("ritmo-texto").innerHTML =
+    `Quedan <strong>${diasRestantes} días</strong> — meta proporcional: <strong>${cop(metaPropGlobal)}</strong>`;
+  const badgeG = document.getElementById("ritmo-badge-global");
+  badgeG.textContent  = `${emojiRitmo(ritmoGlobal)} ${ritmoGlobal.toFixed(0)}% del ritmo`;
+  badgeG.className    = `ritmo-badge ${claseG}`;
+  const barG = document.getElementById("ritmo-bar");
+  barG.style.width    = pctGlobal + "%";
+  barG.className      = `progress-fill fill-${claseG}`;
+
+  // Agrupar canales por sección
+  const secciones = {};
+  for (const canal of Object.keys(metas)) {
+    const meta  = metas[canal] || 0;
+    const venta = ventas[canal] || 0;
+    if (meta === 0 && venta === 0) continue;
+    const sec = (INFO_CANAL[canal] || {}).seccion || "Otros canales";
+    if (!secciones[sec]) secciones[sec] = [];
+    secciones[sec].push({ canal, meta, venta });
+  }
+
+  // Render secciones
+  let html = "";
+  for (const [secNombre, canales] of Object.entries(secciones)) {
+    html += `<div class="seccion-titulo">${secNombre}</div>`;
+    for (const { canal, meta, venta } of canales) {
+      const pct          = meta > 0 ? Math.min((venta/meta)*100, 100) : 0;
+      const metaProp     = meta * fraccion;
+      const ritmo        = metaProp > 0 ? (venta/metaProp)*100 : 0;
+      const necesita     = diasRestantes > 0 ? (meta - venta) / diasRestantes : 0;
+      const cl           = claseRitmo(ritmo);
+      const { emoji }    = INFO_CANAL[canal] || { emoji: "🏷️" };
+
+      html += `
+        <div class="canal-card">
+          <div class="canal-header">
+            <span class="canal-nombre">${emoji} ${canal}</span>
+            <span class="canal-pct ${cl}">${meta > 0 ? pct.toFixed(1)+"%" : "—"}</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill fill-${cl}" style="width:${pct}%"></div>
+          </div>
+          <div class="canal-montos">
+            <span>${copFull(venta)}</span>
+            <span>meta ${copFull(meta)}</span>
+          </div>
+          <div class="canal-ritmo-row">
+            <span class="canal-ritmo-badge ${cl}">${emojiRitmo(ritmo)} ${ritmo.toFixed(0)}% del ritmo</span>
+            <span class="canal-necesita">necesita <strong>${cop(necesita)}/día</strong></span>
+          </div>
+        </div>`;
+    }
+  }
+
+  document.getElementById("secciones").innerHTML = html;
+  document.getElementById("estado").style.display    = "none";
   document.getElementById("contenido").style.display = "block";
 }
 
