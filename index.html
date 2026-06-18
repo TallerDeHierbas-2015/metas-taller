@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metas — Taller de Hierbas</title>
+  <style>
+    :root {
+      --beige:       #C8B8A8;
+      --beige-light: #F5F0EB;
+      --brown-dark:  #3D2B1F;
+      --brown-mid:   #7A5C48;
+      --green:       #5A8A5A;
+      --yellow:      #C4A030;
+      --red:         #B84A3A;
+      --white:       #FEFCFA;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--beige-light);
+      color: var(--brown-dark);
+      min-height: 100vh;
+    }
+    header {
+      background: var(--beige);
+      padding: 20px 16px 16px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--brown-dark);
+    }
+    #actualizado {
+      font-size: 0.72rem;
+      color: var(--brown-mid);
+      margin-top: 5px;
+    }
+    main {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+    .mes-titulo {
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brown-mid);
+      margin-bottom: 14px;
+    }
+    .canal-card {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 13px 15px;
+      margin-bottom: 9px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+    }
+    .canal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 7px;
+    }
+    .canal-nombre { font-size: 0.88rem; font-weight: 600; }
+    .canal-pct    { font-size: 0.98rem; font-weight: 700; }
+    .canal-pct.bueno { color: var(--green); }
+    .canal-pct.medio { color: var(--yellow); }
+    .canal-pct.bajo  { color: var(--red); }
+    .progress-track {
+      background: #E8E0D8;
+      border-radius: 999px;
+      height: 7px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.5s ease;
+    }
+    .progress-fill.bueno { background: var(--green); }
+    .progress-fill.medio { background: var(--yellow); }
+    .progress-fill.bajo  { background: var(--red); }
+    .canal-montos {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.73rem;
+      color: var(--brown-mid);
+    }
+    .total-card {
+      background: var(--beige);
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 4px;
+      margin-bottom: 28px;
+    }
+    .total-card .canal-nombre { font-size: 0.95rem; letter-spacing: 0.04em; }
+    .total-card .canal-pct    { font-size: 1.15rem; }
+    .total-card .canal-montos { font-size: 0.78rem; }
+    #estado {
+      text-align: center;
+      padding: 60px 16px;
+      color: var(--brown-mid);
+      font-size: 0.88rem;
+    }
+    #estado.error { color: var(--red); }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Metas Taller de Hierbas</h1>
+  <div id="actualizado">Cargando…</div>
+</header>
+
+<main>
+  <div id="estado">Cargando datos…</div>
+  <div id="contenido" style="display:none">
+    <div class="mes-titulo" id="mes-titulo"></div>
+    <div id="lista-canales"></div>
+    <div id="total"></div>
+  </div>
+</main>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  CONFIGURACIÓN — lo único que necesitas tocar
+// ══════════════════════════════════════════════════════════════
+
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFfQywCY_PGep0XhChGTgJMqwANC2-Ie54vhn52OuZAS2OAN1ln-2F-2cyLqbAkBU/exec";
+
+// Para agregar un mes nuevo: copia el bloque "2026-06" y pégalo debajo
+// cambiando la clave y los valores. El dashboard usa el mes actual automáticamente.
+const METAS = {
+  "2026-06": {
+    "Tienda Poblado":          15_000_000,
+    "Tienda Laureles":         24_000_000,
+    "Tienda Zona 2 Sur":       28_000_000,
+    "Tienda San Lucas Plaza":  22_000_000,
+    "Tienda Retiro":           54_000_000,
+    "Tienda Bogotá":           36_000_000,
+    "Redes Sociales":           7_500_000,
+    "Dist/Institucional":      60_000_000,
+    "Digital (PW+Rappi)":      60_000_000,
+    "Ferias":                           0,
+  },
+  // "2026-07": {
+  //   "Tienda Poblado":         00_000_000,
+  //   ...
+  // },
+};
+
+// Mapeo: nombre en el dashboard → nombre(s) exactos que devuelve Alegra
+// Si algún nombre no coincide, ajústalo aquí (no toques el resto del código)
+const MAPEO = {
+  "Tienda Poblado":         ["Tienda Poblado"],
+  "Tienda Laureles":        ["Tienda Laureles"],
+  "Tienda Zona 2 Sur":      ["Tienda Zona 2"],
+  "Tienda San Lucas Plaza": ["Tienda San Lucas"],
+  "Tienda Retiro":          ["Tienda Retiro"],
+  "Tienda Bogotá":          ["Tienda Usaquén"],
+  "Redes Sociales":         ["Redes Sociales"],
+  "Dist/Institucional":     ["Distribuidores", "Ventas institucionales"],
+  "Digital (PW+Rappi)":     ["Página Web", "Rappi Medellín", "Rappi Bogotá"],
+  "Ferias":                 ["Ferias"],
+};
+
+// ══════════════════════════════════════════════════════════════
+//  MOTOR — no necesitas modificar nada debajo de esta línea
+// ══════════════════════════════════════════════════════════════
+
+function mesKey() {
+  const h = new Date();
+  return `${h.getFullYear()}-${String(h.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function labelMes(key) {
+  const meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio",
+                 "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  const [y, m] = key.split("-");
+  return `${meses[+m - 1]} ${y}`;
+}
+
+function cop(n) {
+  return "$" + Math.round(n).toLocaleString("es-CO");
+}
+
+function clase(pct) {
+  return pct >= 80 ? "bueno" : pct >= 50 ? "medio" : "bajo";
+}
+
+function tarjeta(nombre, venta, meta, esTotal) {
+  const pct   = meta > 0 ? Math.min((venta / meta) * 100, 100) : 0;
+  const cl    = clase(pct);
+  const extra = esTotal ? " total-card" : "";
+  return `
+    <div class="canal-card${extra}">
+      <div class="canal-header">
+        <span class="canal-nombre">${nombre}</span>
+        <span class="canal-pct ${cl}">${meta > 0 ? pct.toFixed(1) + "%" : "—"}</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill ${cl}" style="width:${pct}%"></div>
+      </div>
+      <div class="canal-montos">
+        <span>${cop(venta)}</span>
+        <span>meta ${cop(meta)}</span>
+      </div>
+    </div>`;
+}
+
+function render(data) {
+  const key   = mesKey();
+  const metas = METAS[key];
+
+  if (!metas) {
+    error(`No hay metas para ${labelMes(key)}. Agrégalas en el objeto METAS del código.`);
+    return;
+  }
+
+  // Agrupar ventas según MAPEO
+  const ventas = {};
+  for (const [canal, nombres] of Object.entries(MAPEO)) {
+    ventas[canal] = nombres.reduce((s, n) => s + (data.canales[n] || 0), 0);
+  }
+
+  let html = "";
+  let totalVenta = 0, totalMeta = 0;
+
+  for (const [canal, meta] of Object.entries(metas)) {
+    const venta = ventas[canal] || 0;
+    if (meta === 0 && venta === 0) continue;
+    totalVenta += venta;
+    totalMeta  += meta;
+    html += tarjeta(canal, venta, meta, false);
+  }
+
+  document.getElementById("mes-titulo").textContent = labelMes(key);
+  document.getElementById("lista-canales").innerHTML = html;
+  document.getElementById("total").innerHTML = tarjeta("TOTAL", totalVenta, totalMeta, true);
+
+  const ts = new Date(data.actualizado);
+  document.getElementById("actualizado").textContent =
+    `Actualizado ${ts.toLocaleDateString("es-CO", {day:"numeric", month:"short"})} · ` +
+    ts.toLocaleTimeString("es-CO", {hour:"2-digit", minute:"2-digit"});
+
+  document.getElementById("estado").style.display = "none";
+  document.getElementById("contenido").style.display = "block";
+}
+
+function error(msg) {
+  const el = document.getElementById("estado");
+  el.textContent = msg;
+  el.className = "error";
+}
+
+fetch(APPS_SCRIPT_URL, { redirect: "follow" })
+  .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+  .then(render)
+  .catch(e => error("No se pudieron cargar los datos. (" + e.message + ")"));
+</script>
+
+</body>
+</html>
