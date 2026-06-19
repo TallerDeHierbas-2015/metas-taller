@@ -410,8 +410,6 @@ function render(data) {
     if (!secciones[sec]) secciones[sec] = [];
     secciones[sec].push({ canal, meta, venta });
   }
-    secciones[sec].push({ canal, meta, venta });
-  }
   for (const sec of Object.values(secciones)) {
     sec.sort((a, b) => (b.venta/b.meta) - (a.venta/a.meta));
   }
