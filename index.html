@@ -411,7 +411,8 @@ function renderizar(data) {
         <div class="tc">
           <div class="tlabel">Vendido</div>
           <div class="tval">${fmt(totalV)}</div>
-          <div class="tsub">${pctT}% · meta al día ${fmt(metaHoy)}</div>
+          <div style="font-size:28px;font-weight:700;letter-spacing:-1px;opacity:.95;margin:4px 0 2px;">${pctT}%</div>
+          <div class="tsub">de la meta total</div>
         </div>
         <div class="tc">
           <div class="tlabel">Meta total</div>
@@ -499,7 +500,7 @@ async function cargar(manual = false) {
     renderizar(data);
   } catch (e) {
     if (manual) {
-      document.getElementById('status-txt').textContent = 'Error al actualizar';
+      document.getElementById('status-txt').textContent = 'Error al actualizar — reintentando en 1 min';
       document.getElementById('content').innerHTML = `
         <div class="state-box">
           <div class="icon">⚠️</div>
