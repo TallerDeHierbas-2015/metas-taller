@@ -354,7 +354,7 @@ const SECCIONES = {
   'B2B':                ['Dist/Institucional'],
 };
 
-let mesSeleccionado = ''; // '' = mes en curso (en vivo)
+let mesSeleccionado = '';
 
 function fmt(n) {
   if (n >= 1000000) return '$' + (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
@@ -379,7 +379,6 @@ function renderizar(data) {
   const pctT   = metaTotal > 0 ? (totalV / metaTotal * 100).toFixed(1) : '0.0';
   const barraW = metaTotal > 0 ? Math.min(totalV / metaTotal * 100, 100).toFixed(1) : 0;
 
-  // Solo aplica ritmo/días restantes al mes en curso (no a meses cerrados)
   let diaAct = 0, diasMes = 0, diasRest = 0, metaHoy = 0, ritmoG = 0, rTxt = '', rCls = '';
   if (!cerrado) {
     const hoy = new Date();
