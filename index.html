@@ -6,7 +6,6 @@
 <title>Metas · Taller de Hierbas</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
-
   :root {
     --verde:    #2D5A27;
     --verde-c:  #4A7C42;
@@ -19,16 +18,13 @@
     --txt:      #1A1A1A;
     --sub:      #6B6B6B;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
     background: var(--crema);
     font-family: 'DM Sans', sans-serif;
     color: var(--txt);
     min-height: 100vh;
   }
-
   .hdr {
     background: var(--verde);
     color: var(--crema);
@@ -72,6 +68,12 @@
     font-weight: 300;
     letter-spacing: .3px;
   }
+  .badge-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
   .badge {
     background: rgba(255,255,255,.15);
     border: 1px solid rgba(255,255,255,.25);
@@ -82,6 +84,17 @@
     letter-spacing: .8px;
     text-transform: uppercase;
   }
+  select#mes-selector {
+    background: rgba(255,255,255,.12);
+    color: var(--crema);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 14px;
+    padding: 5px 10px;
+    font-size: 11px;
+    font-family: 'DM Sans', sans-serif;
+    max-width: 160px;
+  }
+  select#mes-selector option { color: var(--txt); }
   .grid2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -114,7 +127,6 @@
     margin-top: 4px;
     line-height: 1.3;
   }
-
   .statusbar {
     background: #fff;
     border-bottom: 1px solid rgba(0,0,0,.07);
@@ -165,13 +177,21 @@
   .btn-refresh:disabled { opacity: .6; cursor: default; }
   .spin { animation: spin .7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
   .content {
     padding: 20px 20px 56px;
     max-width: 520px;
     margin: 0 auto;
   }
-
+  .nota-fallback {
+    background: #FFF8E8;
+    border: 1px solid #F0DFAE;
+    color: #8A6100;
+    font-size: 12px;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
   .ritmo-box {
     background: #fff;
     border-radius: 14px;
@@ -203,7 +223,6 @@
   .r-ok  { background: #E8F5E9; color: var(--verde); }
   .r-med { background: #FFF3E0; color: #BF6000; }
   .r-mal { background: #FFEBEE; color: var(--rojo); }
-
   .barra-total-bg {
     height: 8px;
     background: var(--crema-o);
@@ -216,7 +235,6 @@
     background: linear-gradient(90deg, var(--verde-m), var(--verde-c));
     transition: width .6s ease;
   }
-
   .sec-title {
     font-size: 10px;
     font-weight: 700;
@@ -227,7 +245,6 @@
     padding-left: 12px;
     border-left: 3px solid var(--tierra);
   }
-
   .card {
     background: #fff;
     border-radius: 16px;
@@ -259,7 +276,6 @@
   .cv { color: var(--verde); }
   .ca { color: var(--amarillo); }
   .cr { color: var(--rojo); }
-
   .bar-bg {
     height: 8px;
     background: var(--crema-o);
@@ -275,7 +291,6 @@
   .bv { background: linear-gradient(90deg, var(--verde-m), var(--verde-c)); }
   .ba { background: linear-gradient(90deg, #F0C060, var(--amarillo)); }
   .br { background: linear-gradient(90deg, #E07060, var(--rojo)); }
-
   .nums {
     display: flex;
     justify-content: space-between;
@@ -284,7 +299,6 @@
     margin-bottom: 6px;
   }
   .nreal { font-weight: 600; color: var(--txt); }
-
   .pace-row {
     display: flex;
     justify-content: space-between;
@@ -299,7 +313,6 @@
   .pv { color: var(--verde); font-weight: 600; }
   .pa { color: #BF6000;      font-weight: 600; }
   .pr { color: var(--rojo);  font-weight: 600; }
-
   .state-box {
     text-align: center;
     padding: 60px 24px;
@@ -311,7 +324,6 @@
 </style>
 </head>
 <body>
-
 <div id="hdr-placeholder"></div>
 <div class="statusbar">
   <div class="status-info">
@@ -322,71 +334,65 @@
     <span id="refresh-icon">↻</span> Actualizar
   </button>
 </div>
-
 <div class="content" id="content">
   <div class="state-box">
     <div class="icon">🌿</div>
     <p>Cargando datos de ventas…</p>
   </div>
 </div>
-
 <script>
 const ENDPOINT = 'https://script.google.com/macros/s/AKfycbyycrOQuEjz9Ej5jjOfYd1fshAuVdJ5qo865ZfuZrDbooHZdI1-Jy3JAuh46sbar3w/exec';
-
-const META_TOTAL = 306500000;
-
-const METAS = {
-  'Tienda Poblado':     15000000,
-  'Tienda Laureles':    24000000,
-  'Tienda Zona 2':      28000000,
-  'Tienda San Lucas':   22000000,
-  'Tienda Retiro':      54000000,
-  'Tienda Bogotá':      36000000,
-  'Redes Sociales':     7500000,
-  'Dist/Institucional': 60000000,
-  'Digital (PW+Rappi)': 60000000,
-};
 
 const EMOJIS = {
   'Tienda Poblado':'🏪','Tienda Laureles':'🏪','Tienda Zona 2':'🏪',
   'Tienda San Lucas':'🏪','Tienda Retiro':'🌿','Tienda Bogotá':'🏪',
   'Redes Sociales':'📱','Dist/Institucional':'🤝','Digital (PW+Rappi)':'💻',
 };
-
 const SECCIONES = {
   'Tiendas Físicas':    ['Tienda Retiro','Tienda Poblado','Tienda Laureles','Tienda Zona 2','Tienda San Lucas','Tienda Bogotá'],
   'Digital & Delivery': ['Digital (PW+Rappi)','Redes Sociales'],
   'B2B':                ['Dist/Institucional'],
 };
 
+let mesSeleccionado = ''; // '' = mes en curso (en vivo)
+
 function fmt(n) {
   if (n >= 1000000) return '$' + (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
   if (n >= 1000)    return '$' + Math.round(n / 1000) + 'K';
   return '$' + Math.round(n).toLocaleString('es-CO');
 }
-
-function mesNombre(d) {
-  return d.toLocaleString('es-CO', { month: 'long', year: 'numeric', timeZone: 'America/Bogota' });
+function nombreMes(mesKey) {
+  const [anio, mes] = mesKey.split('-').map(Number);
+  const d = new Date(anio, mes - 1, 1);
+  const nombre = d.toLocaleString('es-CO', { month: 'long', timeZone: 'America/Bogota' });
+  return nombre.charAt(0).toUpperCase() + nombre.slice(1) + ' ' + anio;
 }
 
 function renderizar(data) {
-  const ventas   = data.canales || {};
-  const hoy      = new Date();
-  const diaAct   = hoy.getDate();
-  const diasMes  = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
-  const diasRest = diasMes - diaAct;
-  const fraccion = diaAct / diasMes;
+  const ventas    = data.canales || {};
+  const metas     = data.metas || {};
+  const metaTotal = data.metaTotal || 0;
+  const cerrado   = !!data.cerrado;
+  const mesKey    = data.mesConsultado || data.mesActual;
 
-  const totalV  = Object.values(ventas).reduce((a, b) => a + b, 0);
-  const metaHoy = META_TOTAL * fraccion;
-  const ritmoG  = totalV / metaHoy;
-  const pctT    = (totalV / META_TOTAL * 100).toFixed(1);
-  const barraW  = Math.min(totalV / META_TOTAL * 100, 100).toFixed(1);
+  const totalV = Object.values(ventas).reduce((a, b) => a + b, 0);
+  const pctT   = metaTotal > 0 ? (totalV / metaTotal * 100).toFixed(1) : '0.0';
+  const barraW = metaTotal > 0 ? Math.min(totalV / metaTotal * 100, 100).toFixed(1) : 0;
 
-  let rTxt, rCls;
-  if (ritmoG >= 1)       { rTxt = '✅ ' + Math.round(ritmoG * 100) + '% del ritmo'; rCls = 'r-ok'; }
-  else if (ritmoG >= .8) { rTxt = '⚡ ' + Math.round(ritmoG * 100) + '% del ritmo'; rCls = 'r-med'; }
-  else                   { rTxt = '⚠️ ' + Math.round(ritmoG * 100) + '% del ritmo'; rCls = 'r-mal'; }
+  // Solo aplica ritmo/días restantes al mes en curso (no a meses cerrados)
+  let diaAct = 0, diasMes = 0, diasRest = 0, metaHoy = 0, ritmoG = 0, rTxt = '', rCls = '';
+  if (!cerrado) {
+    const hoy = new Date();
+    diaAct   = hoy.getDate();
+    diasMes  = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
+    diasRest = diasMes - diaAct;
+    const fraccion = diaAct / diasMes;
+    metaHoy  = metaTotal * fraccion;
+    ritmoG   = metaHoy > 0 ? totalV / metaHoy : 0;
+    if (ritmoG >= 1)       { rTxt = '✅ ' + Math.round(ritmoG * 100) + '% del ritmo'; rCls = 'r-ok'; }
+    else if (ritmoG >= .8) { rTxt = '⚡ ' + Math.round(ritmoG * 100) + '% del ritmo'; rCls = 'r-med'; }
+    else                   { rTxt = '⚠️ ' + Math.round(ritmoG * 100) + '% del ritmo'; rCls = 'r-mal'; }
+  }
 
   let actTxt = '—';
   if (data.actualizado) {
@@ -403,9 +409,12 @@ function renderizar(data) {
       <div class="hdr-top">
         <div>
           <div class="brand">Taller de Hierbas</div>
-          <div class="brand-sub">Seguimiento de metas · ${mesNombre(hoy)}</div>
+          <div class="brand-sub">Seguimiento de metas · ${mesKey ? nombreMes(mesKey) : ''}</div>
         </div>
-        <div class="badge">Junio 2026</div>
+        <div class="badge-wrap">
+          <div class="badge">${mesKey ? nombreMes(mesKey) : '—'}</div>
+          <select id="mes-selector" onchange="cambiarMes(this.value)"></select>
+        </div>
       </div>
       <div class="grid2">
         <div class="tc">
@@ -416,15 +425,23 @@ function renderizar(data) {
         </div>
         <div class="tc">
           <div class="tlabel">Meta total</div>
-          <div class="tval">$306.5M</div>
-          <div class="tsub">Día ${diaAct} de ${diasMes} · faltan ${diasRest}</div>
+          <div class="tval">${fmt(metaTotal)}</div>
+          <div class="tsub">${cerrado ? 'Mes cerrado' : `Día ${diaAct} de ${diasMes} · faltan ${diasRest}`}</div>
         </div>
       </div>
     </div>`;
 
-  document.getElementById('status-txt').textContent = 'Actualizado ' + actTxt;
+  poblarSelector(mesKey);
+  document.getElementById('status-txt').textContent = cerrado ? 'Mes cerrado' : ('Actualizado ' + actTxt);
 
-  let html = `
+  let html = '';
+
+  if (data.metasDe && data.metasDe !== data.mesActual) {
+    html += `<div class="nota-fallback">📌 Aún no hay metas definidas para ${nombreMes(data.mesActual)} — usando las de ${nombreMes(data.metasDe)}.</div>`;
+  }
+
+  if (!cerrado) {
+    html += `
     <div class="ritmo-box">
       <div class="ritmo-top">
         <div class="ritmo-txt">
@@ -437,33 +454,45 @@ function renderizar(data) {
         <div class="barra-total-fill" style="width:${barraW}%"></div>
       </div>
     </div>`;
+  }
 
   for (const [sec, lista] of Object.entries(SECCIONES)) {
     const listaOrdenada = [...lista].sort((a, b) => {
-      const pctA = METAS[a] > 0 ? (ventas[a] || 0) / METAS[a] : 0;
-      const pctB = METAS[b] > 0 ? (ventas[b] || 0) / METAS[b] : 0;
+      const pctA = metas[a] > 0 ? (ventas[a] || 0) / metas[a] : 0;
+      const pctB = metas[b] > 0 ? (ventas[b] || 0) / metas[b] : 0;
       return pctB - pctA;
     });
     html += `<div class="sec-title">${sec}</div>`;
     for (const canal of listaOrdenada) {
-      const meta  = METAS[canal] || 0;
+      const meta  = metas[canal] || 0;
       const v     = ventas[canal] || 0;
       const pct   = meta > 0 ? v / meta * 100 : 0;
       const ancho = Math.min(pct, 100).toFixed(1);
       const pctM  = pct.toFixed(1);
-
-      const metaDiaria = meta / diasMes;
-      const metaAlDia  = metaDiaria * diaAct;
-      const ritmoC     = metaAlDia > 0 ? v / metaAlDia : 0;
-      const falta      = diasRest > 0 ? Math.max((meta - v) / diasRest, 0) : 0;
-
       const cc = pct >= 80 ? 'cv' : pct >= 50 ? 'ca' : 'cr';
       const bc = pct >= 80 ? 'bv' : pct >= 50 ? 'ba' : 'br';
 
-      let pTxt, pCls;
-      if (ritmoC >= 1)        { pTxt = '✅ al ritmo';                                    pCls = 'pv'; }
-      else if (ritmoC >= .75) { pTxt = '⚡ ' + Math.round(ritmoC * 100) + '% del ritmo'; pCls = 'pa'; }
-      else                    { pTxt = '⚠️ ' + Math.round(ritmoC * 100) + '% del ritmo'; pCls = 'pr'; }
+      let paceRow = '';
+      if (!cerrado) {
+        const metaDiaria = meta / diasMes;
+        const metaAlDia  = metaDiaria * diaAct;
+        const ritmoC     = metaAlDia > 0 ? v / metaAlDia : 0;
+        const falta      = diasRest > 0 ? Math.max((meta - v) / diasRest, 0) : 0;
+        let pTxt, pCls;
+        if (ritmoC >= 1)        { pTxt = '✅ al ritmo';                                    pCls = 'pv'; }
+        else if (ritmoC >= .75) { pTxt = '⚡ ' + Math.round(ritmoC * 100) + '% del ritmo'; pCls = 'pa'; }
+        else                    { pTxt = '⚠️ ' + Math.round(ritmoC * 100) + '% del ritmo'; pCls = 'pr'; }
+        paceRow = `
+          <div class="pace-row">
+            <span class="${pCls}">${pTxt}</span>
+            <span>necesita <strong>${fmt(falta)}/día</strong></span>
+          </div>`;
+      } else {
+        paceRow = `
+          <div class="pace-row">
+            <span>${pct >= 100 ? '✅ meta cumplida' : '📊 cierre del mes'}</span>
+          </div>`;
+      }
 
       html += `
         <div class="card">
@@ -476,15 +505,39 @@ function renderizar(data) {
             <span class="nreal">${fmt(v)}</span>
             <span>meta ${fmt(meta)}</span>
           </div>
-          <div class="pace-row">
-            <span class="${pCls}">${pTxt}</span>
-            <span>necesita <strong>${fmt(falta)}/día</strong></span>
-          </div>
+          ${paceRow}
         </div>`;
     }
   }
-
   document.getElementById('content').innerHTML = html;
+}
+
+async function poblarSelector(mesActualKey) {
+  const sel = document.getElementById('mes-selector');
+  if (!sel || sel.dataset.cargado === '1') {
+    if (sel) sel.value = mesSeleccionado;
+    return;
+  }
+  try {
+    const r = await fetch(ENDPOINT + '?listar=meses');
+    const data = await r.json();
+    const meses = data.meses || [];
+    let opts = `<option value="">Mes actual${data.mesActual ? ' · ' + nombreMes(data.mesActual) : ''}</option>`;
+    for (const m of meses) {
+      if (m === data.mesActual) continue;
+      opts += `<option value="${m}">${nombreMes(m)}</option>`;
+    }
+    sel.innerHTML = opts;
+    sel.value = mesSeleccionado;
+    sel.dataset.cargado = '1';
+  } catch (e) {
+    console.error('No se pudo cargar la lista de meses', e);
+  }
+}
+
+function cambiarMes(valor) {
+  mesSeleccionado = valor;
+  cargar(true);
 }
 
 async function cargar(manual = false) {
@@ -492,15 +545,15 @@ async function cargar(manual = false) {
   const icon = document.getElementById('refresh-icon');
   btn.disabled = true;
   icon.classList.add('spin');
-
   try {
-    const r = await fetch(ENDPOINT);
+    const url = ENDPOINT + (mesSeleccionado ? '?mes=' + mesSeleccionado : '');
+    const r = await fetch(url);
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const data = await r.json();
     renderizar(data);
   } catch (e) {
     if (manual) {
-      document.getElementById('status-txt').textContent = 'Error al actualizar — reintentando en 1 min';
+      document.getElementById('status-txt').textContent = 'Error al actualizar';
       document.getElementById('content').innerHTML = `
         <div class="state-box">
           <div class="icon">⚠️</div>
@@ -515,7 +568,7 @@ async function cargar(manual = false) {
 }
 
 cargar();
-setInterval(() => cargar(), 5 * 60 * 1000);
+setInterval(() => { if (!mesSeleccionado) cargar(); }, 5 * 60 * 1000);
 </script>
 </body>
 </html>
